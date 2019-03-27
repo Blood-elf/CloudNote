@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.snow.dao.NoteMapper">
+
+	<!-- findByNoteBookId -->
+	<select id="findByNoteBookId" parameterType="string" resultType="com.snow.entity.Note">
+		select * from cn_note
+		where cn_notebook_id=#{noteBookId}
+		order by cn_note_create_time
+	</select>
+
+</mapper>

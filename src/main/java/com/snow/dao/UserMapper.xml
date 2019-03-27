@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.snow.dao.UserMapper">
+
+	<!-- findByName -->
+	<!-- 
+		如果方法只传入一个参数，那么MyBatis在执行
+		下面的sql时，只能使用这个唯一的参数，没有
+		其他的选择，所以实际上#{}中写的参数名是
+		什么都可以，但一般情况下，我们还是会写成
+		传入的参数名。
+	 -->
+	<select id="findByName"
+		parameterType="string"
+		resultType="com.snow.entity.User">
+		select * from cn_user
+		where cn_user_name=#{userName}
+	</select>
+	
+	<!-- save -->
+	<!-- 
+		如果传入的参数是个实体对象或者Map对象，
+		那么对象中可以封装多个值，因此在sql中的
+		#{}里的参数名不能随便写，对于实体对象需要
+		写对象的属性名，对于Map对象需要写它的key。
+	 -->
+	<insert id="save" parameterType="com.snow.entity.User">
+		insert into cn_user values(
+			#{cn_user_id},
+			#{cn_user_name},
+			#{cn_user_password},
+			#{cn_user_token},
+			#{cn_user_desc}
+		)
+	</insert>
+	
+	<!-- update -->
+	<update id="update" parameterType="com.snow.entity.User">
+		update cn_user set 
+			cn_user_name=#{cn_user_name},
+			cn_user_password=#{cn_user_password},
+			cn_user_token=#{cn_user_token},
+			cn_user_desc=#{cn_user_desc}
+		where cn_user_id=#{cn_user_id}					
+	</update>
+	
+</mapper>
