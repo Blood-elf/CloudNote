@@ -11,4 +11,32 @@
 		order by cn_note_create_time
 	</select>
 
+	<!-- save -->
+	<insert id="save" parameterType="com.snow.entity.Note">
+		insert into cn_note values(
+			#{cn_note_id},
+			#{cn_notebook_id},
+			#{cn_user_id},
+			#{cn_note_status_id},
+			#{cn_note_type_id},
+			#{cn_note_title},
+			#{cn_note_body},
+			#{cn_note_create_time},
+			#{cn_note_last_modify_time}
+		)
+	</insert>
+	
+	<!-- update -->
+	<update id="update" parameterType="com.snow.entity.Note">
+		update cn_note set
+			cn_notebook_id=#{cn_notebook_id},
+			cn_user_id=#{cn_user_id},
+			cn_note_status_id=#{cn_note_status_id},
+			cn_note_type_id=#{cn_note_type_id},
+			cn_note_title=#{cn_note_title},
+			cn_note_body=#{cn_note_body},
+			cn_note_last_modify_time=#{cn_note_last_modify_time}
+		where cn_note_id=#{cn_note_id}		
+	</update>
+	
 </mapper>

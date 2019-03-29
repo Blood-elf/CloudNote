@@ -68,11 +68,17 @@ $(function(){
 		$('#pc_part_2 ul').empty();
 		//将回收站列表、收藏列表、搜索列表、活动列表、预览笔记的div隐藏
 		$('#pc_part_4,#pc_part_5,#pc_part_6,#pc_part_7,#pc_part_8').hide();
+		//将回收站按钮、收藏夹按钮、活动按钮的选中样式移除
 		$('#rollback_button,#like_button,#action_button').removeClass('clicked');
+		//sibling获取当前对象的兄弟节点
+		//this指的是当前点击的对象，即选中的li
 		$(this).siblings('li').children('a').removeClass('checked');
 		$(this).children('a').addClass('checked');
+		
 		//获取笔记本下的笔记列表
-		getNormalNoteList();
+		var li = $("#first_side_right .checked").parent();
+		var notebook = li.data("notebook");
+		getNormalNoteList(notebook.cn_notebook_id);
     }),
     
 	//----打开创建笔记本界面
@@ -129,7 +135,9 @@ $(function(){
 	$(document).on("click", "#pc_part_2 li", function() {
 		$(this).siblings('li').children('a').removeClass('checked');
 		$(this).children('a').addClass('checked');
-		getNoteDetail();
+		
+		var li = $("#second_side_right .checked").parent();
+		getNoteDetail(li);
     }),
     
 	//----打开创建笔记界面
@@ -182,11 +190,17 @@ $(function(){
     
 	//----确认移动
 	$(document).on('click','#modalBasic_11 .btn.btn-primary.sure',function(){
-		moveNote();
+		//获取弹出框中选择的笔记本
+		var notebook_id = $("#moveSelect").val();
+		//如果选择的笔记本为空，或和当前的笔记本一样
+		if(!notebook_id) 
+			return;		
+		moveNote(notebook_id);
 	});
     
 	//----分享笔记
 	$(document).on("click", "#second_side_right .btn_share", function() {
+		//将分享按钮淡出，刚刚分享过的笔记不能再次分享了
 		$(this).fadeOut(600);
 		createShareNote();
     }),
@@ -241,20 +255,36 @@ $(function(){
 	/***********搜索笔记模块************/
 	//----搜索笔记
 	$(document).on("keyup", "body", function(e) {
+		//注册搜索动作，在键盘弹起时触发
+		//如果当前光标在搜索框内，且弹起的按键是Enter
 		if($('#search_note').is(':focus')&&(e.keyCode==108||e.keyCode==13)){
-			var m=$('#search_note').val();
-			var n=m.replace(/ /g,'');
-			var a=n.length;
-			if(a!=0){
-				//$('#sixth_side_right ul').empty();
-				getShareNoteList();
+			var m=$('#search_note').val().replace(/ /g,'');
+			if(m){
+				//将搜索笔记列表、预览笔记的div显示
+				$('#pc_part_6,#pc_part_5').show();
+				//将回收站列表、收藏列表、笔记列表、活动列表、编辑笔记的div隐藏
+				$('#pc_part_2,#pc_part_3,#pc_part_4,#pc_part_7,#pc_part_8').hide();
+				//将回收站按钮、收藏夹按钮、活动按钮的选中样式移除
+				$('#rollback_button,#like_button,#action_button').removeClass('clicked');
+				$('#sixth_side_right ul').empty();
+				//搜索时，默认为第1页，将页码绑定到更多按钮上
+				$("#more_note").data("currentPage",1);
+				getShareNoteList(m,1);			
 			}
 		}
     }),
     
 	//----更多搜索笔记
 	$(document).on("click", "#more_note", function() {
-		getShareNoteList();
+		var m=$('#search_note').val().replace(/ /g,'');
+		if(m){
+			//获取原来的页码
+			var currentPage = $("#more_note").data("currentPage");
+			//当前页=原来的页码+1
+			$("#more_note").data("currentPage",currentPage+1);
+			//查询当前页的数据
+			getShareNoteList(m,currentPage+1);			
+		}
     }),
     
 	//----点击搜索笔记

@@ -24,4 +24,6 @@ public interface SystemConstant {
 	int NAME_ERROR = 1;
 	int PASSWORD_ERROR = 2;
 	
+	//每页显示最大行
+	int PAGE_SIZE = 5;	
 }

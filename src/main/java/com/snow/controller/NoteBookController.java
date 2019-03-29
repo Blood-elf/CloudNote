@@ -57,4 +57,12 @@ public class NoteBookController extends BaseController{
 		noteBookService.delete(id);
 		return new Result();
 	}
+	
+	@RequestMapping("/findList.do")
+	@ResponseBody
+	public Result findList(HttpSession session) {
+		User user = (User)session.getAttribute("user");
+		List<NoteBook> list = noteBookService.findEnableNoteBook(user.getCn_user_id());
+		return new Result(list);
+	}
 }

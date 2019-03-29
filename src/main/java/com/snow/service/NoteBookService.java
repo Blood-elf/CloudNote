@@ -61,4 +61,24 @@ public class NoteBookService implements SystemConstant{
 		
 		noteBookMapper.delete(id);
 	}
+	
+	/**
+	 * 查询出用户可用的笔记本，包括默认笔记本，以及普通笔记本。
+	 * @param userId  用户ID
+	 * @return
+	 */
+	public List<NoteBook> findEnableNoteBook(String userId){
+		if(userId == null)
+			throw new RuntimeException("参数为空");
+		
+		//查询出所有的普通笔记本
+		List<NoteBook> list = noteBookMapper.findNormal(userId);
+		
+		//查询出默认笔记本
+		NoteBook push = noteBookMapper.findSpecialByType(userId, NOTEBOOK_TYPE_ID_PUSH);
+		push.setCn_notebook_name("默认笔记本");
+		list.add(0, push);
+		
+		return list;
+	}
 }

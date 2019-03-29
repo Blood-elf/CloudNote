@@ -47,4 +47,11 @@
 		where cn_notebook_id=#{id}
 	</delete>
 	
+	<!-- findSpecialByType -->
+	<select id="findSpecialByType" resultType="com.snow.entity.NoteBook">
+		select * from cn_notebook
+		where cn_user_id=#{arg0}
+		and cn_notebook_type_id=#{arg1}
+	</select>	
+	
 </mapper>

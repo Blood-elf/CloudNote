@@ -15,4 +15,6 @@ public interface NoteBookMapper {
 	void update(NoteBook notebook);
 	
 	void delete(String id);
+	
+	NoteBook findSpecialByType(String userId, String typeId);
 }

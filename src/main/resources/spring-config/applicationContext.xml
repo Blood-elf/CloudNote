@@ -61,6 +61,23 @@
 	
 	<!-- 开启MVC注解扫描 -->
 	<mvc:annotation-driven />	
+	
+	<!-- 开启AOP注解扫描 -->
+	<aop:aspectj-autoproxy proxy-target-class="true"/>	
+	
+	<!-- 配置拦截器 -->
+	<mvc:interceptors>
+		<!-- 登录检查拦截器 -->
+		<!-- 
+			/note/find.do
+		 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/login/register.do"/>
+			<mvc:exclude-mapping path="/login/checkLogin.do"/>
+			<bean class="com.snow.util.LoginInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>	
    
 	<!--包含 mybatis-spring -->
 	<!-- 

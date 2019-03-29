@@ -156,5 +156,22 @@ function deleteNoteBook(li){
  * 将笔记本列表放置到select组件中
  */
 function setNoteBookToSelect(){
-	console.log("将笔记本列表放置到select组件中");
+	$.post(
+			base_path+"/notebook/findList.do",
+			{},
+			function(result){
+				if(result.success){
+					var list = result.data;
+					$(list).each(function(){
+						//创建option
+						var option = '<option value="'+this.cn_notebook_id+'">'+this.cn_notebook_name+'</option>';
+						//将option插入到下拉选中
+						$("#moveSelect").append(option);						
+					});
+				}
+				else{
+					alert(result.message);
+				}
+			}
+	);
 }
